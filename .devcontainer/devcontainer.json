@@ -1,0 +1,16 @@
+{
+	"name": "Node.js & TypeScript",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-trixie",
+	"appPort": [
+		"5173:5173"
+	],
+	"postCreateCommand": "npm install",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mhutchie.git-graph",
+				"streetsidesoftware.code-spell-checker"
+			]
+		}
+	}
+}

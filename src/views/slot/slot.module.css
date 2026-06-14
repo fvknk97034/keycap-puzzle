@@ -1,0 +1,16 @@
+.slot {
+  border: 1px solid var(--border);
+  height: 100%;
+  cursor: pointer;
+}
+
+.fixed {
+  background-color: var(--social-bg);
+  border: none;
+}
+
+.selected {
+  color: var(--accent);
+  background-color: var(--accent-bg);
+  border-color: var(--accent-border);
+}

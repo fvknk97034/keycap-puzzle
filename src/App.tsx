@@ -1,14 +1,11 @@
-import './App.css'
-import { GameView } from './views/game/gameView'
+import { GameView } from "./components/game/GameView";
 
 function App() {
   return (
-    <>
-      <main>
-        <GameView />
-      </main>
-    </>
-  )
+    <main>
+      <GameView />
+    </main>
+  );
 }
 
-export default App
+export default App;

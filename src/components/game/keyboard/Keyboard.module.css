@@ -1,0 +1,9 @@
+.keyboard {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.keyboard--standard {
+  grid-template-columns: repeat(60, 1fr);
+  grid-auto-rows: clamp(1.5rem, 6vw, 3rem);
+}

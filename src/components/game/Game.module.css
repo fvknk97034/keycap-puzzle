@@ -1,0 +1,12 @@
+.container {
+  display: grid;
+  gap: 1rem;
+  padding: 0.8rem;
+}
+
+.container__panel {
+  border: 1px solid var(--border);
+  padding: 0.8rem;
+  margin: 0 auto;
+  width: 90%;
+}

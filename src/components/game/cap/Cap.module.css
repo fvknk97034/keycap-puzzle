@@ -1,0 +1,33 @@
+.cap {
+  border: 1px solid var(--border);
+  display: grid;
+  gap: 0.2rem;
+  height: 100%;
+  place-content: center;
+  place-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cap--quad {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.cap--single {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.cap__char {
+  font-size: 0.7rem;
+  line-height: 1.2rem;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.cap__char--compact {
+  font-size: clamp(0.5rem, 1vw, 0.7rem);
+  line-height: clamp(0.6rem, 1.5vw, 1rem);
+}

@@ -56,6 +56,7 @@ export function GameView() {
 
   function handleSlotClick(slot: SlotEntity) {
     if (!inGaming) return;
+    if (slot.fixed) return;
 
     if (selectedTrayCap && slot.cap) {
       setSelectedTrayCap(null);

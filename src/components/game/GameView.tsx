@@ -111,7 +111,7 @@ export function GameView() {
       <Modal
         open={showResult}
         elapsedMs={elapsedMs}
-        onClose={handleToastClose}
+        onClose={() => setShowResult(false)}
       />
       <Toast open={showToast} onClose={handleToastClose} />
 

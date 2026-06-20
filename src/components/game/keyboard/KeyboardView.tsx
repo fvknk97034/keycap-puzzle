@@ -3,7 +3,7 @@ import { SlotEntity } from "../../../domain/game/slot/SlotEntity";
 
 import type { IKeyboardEntity } from "../../../domain/game/keyboard/IKeyboardEntity";
 
-import styles from "./keyboard.module.css";
+import styles from "./Keyboard.module.css";
 
 interface Props {
   keyboard: IKeyboardEntity;

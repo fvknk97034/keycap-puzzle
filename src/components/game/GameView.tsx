@@ -10,7 +10,7 @@ import type { CapEntity } from "../../domain/game/cap/CapEntity";
 import { SlotEntity } from "../../domain/game/slot/SlotEntity";
 import { Game } from "../../domain/game/Game";
 
-import styles from "./game.module.css";
+import styles from "./Game.module.css";
 import { Toast } from "../toast/Toast";
 
 export function GameView() {

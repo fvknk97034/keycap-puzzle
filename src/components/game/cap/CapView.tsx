@@ -1,4 +1,4 @@
-import styles from "./cap.module.css";
+import styles from "./Cap.module.css";
 import type { CapEntity } from "../../../domain/game/cap/CapEntity";
 
 interface Props {

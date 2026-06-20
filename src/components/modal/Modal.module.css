@@ -34,7 +34,7 @@
   padding: 0.5rem 1.5rem;
   border-radius: 0.4rem;
   border: 1px solid var(--accent-border);
-  background: var(--accent-bg);
+  background: var(--accent);
   cursor: pointer;
 }
 

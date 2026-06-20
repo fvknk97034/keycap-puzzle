@@ -90,7 +90,7 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: ["<", "、", ",", "ね"] },
       { legend: [">", "。", ".", "る"] },
       { legend: ["?", "・", "/", "め"] },
-      { legend: ["_", "", "", "ろ"] },
+      { legend: ["_", "", "\\", "ろ"] },
       { legend: ["shift"], width: 8 },
     ],
     [

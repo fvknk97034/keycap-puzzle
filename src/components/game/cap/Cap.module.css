@@ -31,3 +31,18 @@
   font-size: clamp(0.5rem, 1vw, 0.7rem);
   line-height: clamp(0.6rem, 1.5vw, 1rem);
 }
+
+@media (width <= 480px) {
+  .cap--quad .cap__char:nth-child(1),
+  .cap--quad .cap__char:nth-child(2),
+  .cap--quad .cap__char:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (width <= 480px) {
+  .cap--single .cap__char {
+    font-size: 0.35rem;
+    line-height: 0.4rem;
+  }
+}

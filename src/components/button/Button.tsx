@@ -1,19 +1,15 @@
 import styles from "./Button.module.css";
 
 interface Props {
-  inGaming: boolean;
-  canFinish: boolean;
+  disable: boolean;
+  label: string;
   onClick: () => void;
 }
 
-export function Button({ inGaming, canFinish, onClick }: Props) {
+export function Button({ disable, label, onClick }: Props) {
   return (
-    <button
-      className={styles["button"]}
-      disabled={inGaming && !canFinish}
-      onClick={onClick}
-    >
-      {inGaming ? "回答終了" : "回答開始"}
+    <button className={styles["button"]} disabled={disable} onClick={onClick}>
+      {label}
     </button>
   );
 }

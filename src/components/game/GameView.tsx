@@ -104,11 +104,14 @@ export function GameView() {
   return (
     <main className={styles["container"]}>
       <Timer elapsedMs={elapsedMs} />
-      <Button
-        inGaming={inGaming}
-        canFinish={canFinish}
-        onClick={handleButton}
-      />
+      <div className={styles["button__container"]}>
+        <Button disable={inGaming} label={"スタート"} onClick={handleButton} />
+        <Button
+          disable={!inGaming || !canFinish}
+          label={"終了"}
+          onClick={handleButton}
+        />
+      </div>
       <Modal
         open={showResult}
         elapsedMs={elapsedMs}

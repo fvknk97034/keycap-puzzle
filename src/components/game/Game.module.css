@@ -10,3 +10,8 @@
   margin: 0 auto;
   width: 90%;
 }
+
+.button__container {
+  display: flex;
+  justify-content: center;
+}

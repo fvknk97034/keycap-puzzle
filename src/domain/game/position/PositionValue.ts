@@ -1,8 +1,8 @@
 import type { PositionValueProps } from "./PositionValueProps.types";
 
 export class PositionValue {
-  _colStart: number | null;
-  _rowStart: number | null;
+  private readonly _colStart: number | null;
+  private readonly _rowStart: number | null;
 
   get colStart() {
     return this._colStart;

@@ -4,8 +4,8 @@ import { SizeValue } from "../size/SizeValue";
 import type { CapEntityProps } from "./CapEntityProps.types";
 
 export class CapEntity {
-  _legend: LegendValue;
-  _size: SizeValue;
+  private readonly _legend: LegendValue;
+  private readonly _size: SizeValue;
 
   get legend() {
     return this._legend;

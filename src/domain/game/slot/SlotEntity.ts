@@ -5,10 +5,10 @@ import { PositionValue } from "../position/PositionValue";
 import { SizeValue } from "../size/SizeValue";
 
 export class SlotEntity {
-  _cap: CapEntity | null;
-  _size: SizeValue;
-  _position: PositionValue;
-  _fixed: boolean;
+  private _cap: CapEntity | null;
+  private readonly _size: SizeValue;
+  private readonly _position: PositionValue;
+  private readonly _fixed: boolean;
 
   get cap() {
     return this._cap;

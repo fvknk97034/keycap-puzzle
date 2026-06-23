@@ -1,8 +1,8 @@
 import type { SizeValueProps } from "./SizeValueProps.types";
 
 export class SizeValue {
-  _height: number;
-  _width: number;
+  private readonly _height: number;
+  private readonly _width: number;
 
   static BASE_HEIGHT: number = 1;
   static BASE_WIDTH: number = 4;

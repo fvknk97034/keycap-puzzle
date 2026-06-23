@@ -1,5 +1,5 @@
 export class LegendValue {
-  _val: string[];
+  private readonly _val: string[];
 
   get val(): string[] {
     return this._val;

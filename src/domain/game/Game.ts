@@ -8,8 +8,8 @@ export class Game {
   private readonly _correctKeyboard: IKeyboardEntity = new JisKeyboardEntity({
     isCorrect: true,
   });
-  _keyboard: IKeyboardEntity = new JisKeyboardEntity({});
-  _caps: CapEntity[] = [];
+  private _keyboard: IKeyboardEntity = new JisKeyboardEntity({});
+  private _caps: CapEntity[] = [];
 
   get keyboardType() {
     return this._keyboardType;

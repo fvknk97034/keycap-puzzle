@@ -106,7 +106,7 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: ["ctrl"], width: 5, fixed: true },
     ],
   ];
-  _slots: SlotEntity[][];
+  private readonly _slots: SlotEntity[][];
 
   get slots() {
     return this._slots;

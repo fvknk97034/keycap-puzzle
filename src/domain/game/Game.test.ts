@@ -116,7 +116,8 @@ describe("Game", () => {
     describe("caps が空の場合", () => {
       it("true を返すこと", () => {
         const game = new Game();
-        game._caps = [];
+        const gameAny = game as any;
+        gameAny._caps = [];
 
         expect(game.canFinish()).toBe(true);
       });
@@ -137,8 +138,9 @@ describe("Game", () => {
         it("true を返すこと", () => {
           const game = new Game();
           const answer = new JisKeyboardEntity({ isCorrect: true });
-          game._keyboard = answer;
-          game._caps = [];
+          const gameAny = game as any;
+          gameAny._keyboard = answer;
+          gameAny._caps = [];
 
           expect(game.isCompleted()).toBe(true);
         });
@@ -147,10 +149,12 @@ describe("Game", () => {
       describe("正解と一致しない場合", () => {
         it("false を返すこと", () => {
           const game = new Game();
-          game._keyboard = new JisKeyboardEntity({ isCorrect: true });
-          (game._keyboard as JisKeyboardEntity)._slots =
-            game._keyboard.slots.toReversed();
-          game._caps = [];
+          const gameAny = game as any;
+          gameAny._keyboard = new JisKeyboardEntity({
+            isCorrect: true,
+          });
+          gameAny._keyboard._slots = gameAny._keyboard.slots.toReversed();
+          gameAny._caps = [];
 
           expect(game.isCompleted()).toBe(false);
         });

@@ -49,17 +49,8 @@ afterEach(() => {
 
 describe("Game", () => {
   describe("constructor", () => {
-    it("初期状態では caps と keyboard が Keyboard から生成されること", () => {
+    it("keyboard が生成されること", () => {
       const game = new Game();
-
-      expect(new Set(game.caps)).toEqual(
-        new Set([
-          new CapEntity({ legend: ["Q", "た", "", ""], height: 2, width: 3 }),
-          new CapEntity({ legend: ["esc"] }),
-          new CapEntity({ legend: ["space"] }),
-        ]),
-      );
-
       expect(game.keyboard.slots).toEqual([
         [
           new SlotEntity({
@@ -87,6 +78,160 @@ describe("Game", () => {
           new SlotEntity({}),
         ],
       ]);
+    });
+
+    it("caps が空で生成されること", () => {
+      const game = new Game();
+      expect(game.caps).toEqual([]);
+    });
+
+    it("inPlaying が false であること", () => {
+      const game = new Game();
+      expect(game.inPlaying).toBe(false);
+    });
+
+    it("開始・終了時刻が null であること", () => {
+      const game = new Game();
+      expect(game.startMs).toBeNull();
+      expect(game.endMs).toBeNull();
+    });
+  });
+
+  describe("start", () => {
+    it("caps が生成されること", () => {
+      const game = new Game();
+      game.start();
+
+      expect(new Set(game.caps)).toEqual(
+        new Set([
+          new CapEntity({ legend: ["Q", "た", "", ""], height: 2, width: 3 }),
+          new CapEntity({ legend: ["esc"] }),
+          new CapEntity({ legend: ["space"] }),
+        ]),
+      );
+    });
+
+    it("inPlaying が true であること", () => {
+      const game = new Game();
+      game.start();
+
+      expect(game.inPlaying).toBe(true);
+    });
+
+    it("開始時刻が null でないこと", () => {
+      const game = new Game();
+      game.start();
+
+      expect(game.startMs).not.toBeNull();
+    });
+
+    it("終了時刻が null であること", () => {
+      const game = new Game();
+      game.start();
+
+      expect(game.endMs).toBeNull();
+    });
+  });
+
+  describe("finish", () => {
+    describe("canFinish() が true の場合", () => {
+      it("終了時刻が null でないこと", () => {
+        const game = new Game();
+        game.start();
+        vi.spyOn(game, "canFinish").mockReturnValue(true);
+        game.finish();
+
+        expect(game.endMs).not.toBeNull();
+      });
+
+      it("inPlaying が false であること", () => {
+        const game = new Game();
+        game.start();
+        vi.spyOn(game, "canFinish").mockReturnValue(true);
+        game.finish();
+
+        expect(game.inPlaying).toBe(false);
+      });
+    });
+
+    describe("canFinish() が false の場合", () => {
+      it("終了時刻が null であること", () => {
+        const game = new Game();
+        game.start();
+        vi.spyOn(game, "canFinish").mockReturnValue(false);
+        game.finish();
+
+        expect(game.endMs).toBeNull();
+      });
+
+      it("inPlaying が true であること", () => {
+        const game = new Game();
+        game.start();
+        vi.spyOn(game, "canFinish").mockReturnValue(false);
+        game.finish();
+
+        expect(game.inPlaying).toBe(true);
+      });
+    });
+  });
+
+  describe("finish", () => {
+    describe("canFinish() が true の場合", () => {
+      it("終了時刻が null でないこと", () => {
+        const game = new Game();
+        vi.spyOn(game, "canFinish").mockReturnValue(true);
+        game.finish();
+
+        expect(game.endMs).not.toBeNull();
+      });
+    });
+
+    describe("canFinish() が false の場合", () => {
+      it("終了時刻が null であること", () => {
+        const game = new Game();
+        vi.spyOn(game, "canFinish").mockReturnValue(false);
+        game.finish();
+
+        expect(game.endMs).toBeNull();
+      });
+    });
+  });
+
+  describe("elapsedMs", () => {
+    describe("startMs が null の場合", () => {
+      it("0 を返すこと", () => {
+        const game = new Game();
+
+        expect(game.elapsedMs()).toBe(0);
+      });
+    });
+
+    describe("startMs が null でない場合", () => {
+      it("経過時間を返すこと", () => {
+        const game = new Game();
+
+        const now = Date.now();
+        vi.spyOn(Date, "now").mockReturnValue(now);
+        game.start();
+        vi.spyOn(Date, "now").mockReturnValue(now + 5000);
+
+        expect(game.elapsedMs()).toBe(5000);
+      });
+    });
+
+    describe("endMs が null でない場合", () => {
+      it("ゲーム終了までの経過時間を返すこと", () => {
+        const game = new Game();
+        const now = Date.now();
+        vi.spyOn(Date, "now").mockReturnValue(now);
+        game.start();
+        vi.spyOn(Date, "now").mockReturnValue(now + 5000);
+        vi.spyOn(game, "canFinish").mockReturnValue(true);
+        game.finish();
+        vi.spyOn(Date, "now").mockReturnValue(now + 10000);
+
+        expect(game.elapsedMs()).toBe(5000);
+      });
     });
   });
 
@@ -126,6 +271,7 @@ describe("Game", () => {
     describe("caps が空でない場合", () => {
       it("false を返すこと", () => {
         const game = new Game();
+        game.start();
 
         expect(game.canFinish()).toBe(false);
       });

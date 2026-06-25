@@ -11,6 +11,11 @@ export class Game {
   private _keyboard: IKeyboardEntity = new JisKeyboardEntity({});
   private _caps: CapEntity[] = [];
 
+  private _inPlaying: boolean = false;
+
+  private _startMs: number | null = null;
+  private _endMs: number | null = null;
+
   get keyboardType() {
     return this._keyboardType;
   }
@@ -23,12 +28,59 @@ export class Game {
     return this._caps;
   }
 
-  constructor(keyboardType = "JIS") {
-    this._keyboardType = keyboardType;
-    this._caps = this.keyboard.shuffleCaps();
+  get inPlaying() {
+    return this._inPlaying;
   }
 
-  updateKeyboard(slot: SlotEntity, cap: CapEntity | null) {
+  get startMs() {
+    return this._startMs;
+  }
+
+  get endMs() {
+    return this._endMs;
+  }
+
+  private set caps(caps) {
+    this._caps = caps;
+  }
+
+  private set inPlaying(inPlaying) {
+    this._inPlaying = inPlaying;
+  }
+
+  private set startMs(startMs) {
+    this._startMs = startMs;
+  }
+
+  private set endMs(endMs) {
+    this._endMs = endMs;
+  }
+
+  constructor(keyboardType = "JIS") {
+    this._keyboardType = keyboardType;
+  }
+
+  start(): void {
+    this.startMs = Date.now();
+    this.caps = this.keyboard.shuffleCaps();
+    this.inPlaying = true;
+  }
+
+  finish(): void {
+    if (!this.canFinish()) return;
+
+    this.endMs = Date.now();
+    this.inPlaying = false;
+  }
+
+  elapsedMs(): number {
+    if (!this.startMs) return 0;
+    if (this.endMs) return this.endMs - this.startMs;
+
+    return Date.now() - this.startMs;
+  }
+
+  updateKeyboard(slot: SlotEntity, cap: CapEntity | null): void {
     const slottedCap = slot.cap;
     slot.cap = cap;
 

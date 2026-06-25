@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 
 import { Timer } from "../timer/Timer";
 import { Button } from "../button/Button";
@@ -21,100 +21,104 @@ export function GameView() {
   );
   const [selectedSlot, setSelectedSlot] = useState<SlotEntity | null>(null);
 
-  const [elapsedMs, setElapsedMs] = useState(0);
-  const startTimeRef = useRef<number | null>(null);
-
-  const [inGaming, setInGaming] = useState<boolean>(false);
   const [showResult, setShowResult] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
   const [, forceUpdate] = useReducer((n) => n + 1, 0);
 
-  const canFinish = game.canFinish();
-
-  const handleToastClose = useCallback(() => {
-    setShowToast(false);
-  }, []);
+  const handleToastClose = useCallback(() => setShowToast(false), []);
 
   useEffect(() => {
-    if (!inGaming) return;
+    if (!game.inPlaying) return;
 
-    const timerId = setInterval(() => {
-      if (startTimeRef.current !== null)
-        setElapsedMs(Date.now() - startTimeRef.current);
-    }, 1000);
+    const timerId = setInterval(() => forceUpdate(), 1000);
 
     return () => clearInterval(timerId);
-  }, [inGaming]);
+  }, [game.inPlaying]);
 
   function handleTrayCapClick(cap: CapEntity) {
-    if (!inGaming) return;
+    if (!game.inPlaying) return;
 
     setSelectedTrayCap((prev) => (prev === cap ? null : cap));
     setSelectedSlot(null);
   }
 
-  function handleSlotClick(slot: SlotEntity) {
-    if (!inGaming) return;
-    if (slot.fixed) return;
+  function selectSlot(slot: SlotEntity) {
+    setSelectedSlot(slot);
+    setSelectedTrayCap(null);
+  }
 
-    if (selectedTrayCap && slot.cap) {
-      setSelectedTrayCap(null);
-      setSelectedSlot(slot);
-      return;
-    }
+  function setCapToSlot(slot: SlotEntity, cap: CapEntity | null) {
+    if (cap && !slot.canSet(cap)) return;
 
-    if (slot.cap && slot === selectedSlot) {
-      game.updateKeyboard(slot, null);
-      setSelectedSlot(null);
-      forceUpdate();
-      return;
-    }
-
-    setSelectedSlot(slot.cap ? slot : null);
-    if (!selectedTrayCap) return;
-    if (!slot.canSet(selectedTrayCap)) return;
-
-    game.updateKeyboard(slot, selectedTrayCap);
+    game.updateKeyboard(slot, cap);
     setSelectedTrayCap(null);
     setSelectedSlot(null);
     forceUpdate();
   }
 
-  function handleButton() {
-    if (!inGaming) {
-      setInGaming(true);
-      setGame(new Game());
-      startTimeRef.current = Date.now();
-      setElapsedMs(0);
+  function removeCapFromSlot(slot: SlotEntity) {
+    game.updateKeyboard(slot, null);
+    setSelectedSlot(null);
+    forceUpdate();
+  }
+
+  function handleSlotClick(slot: SlotEntity) {
+    if (!game.inPlaying) return;
+    if (slot.fixed) return;
+
+    if (slot.cap && slot === selectedSlot) {
+      removeCapFromSlot(slot);
       return;
     }
 
-    if (game.canFinish()) {
-      if (game.isCompleted()) {
-        setInGaming(false);
-        setElapsedMs(Date.now() - (startTimeRef.current ?? Date.now()));
-        setShowResult(true);
-      } else {
-        setShowToast(true);
-      }
+    if (slot.cap && selectedTrayCap) {
+      selectSlot(slot);
+      return;
+    }
+
+    setCapToSlot(slot, selectedTrayCap);
+  }
+
+  function handleStartButton() {
+    if (game.inPlaying) return;
+
+    const newGame = new Game();
+    newGame.start();
+    setGame(newGame);
+  }
+
+  function handleFinishButton() {
+    if (!game.canFinish()) return;
+
+    if (game.isCompleted()) {
+      game.finish();
+      forceUpdate();
+
+      setShowResult(true);
+    } else {
+      setShowToast(true);
     }
   }
 
   return (
     <main className={styles["container"]}>
-      <Timer elapsedMs={elapsedMs} />
+      <Timer elapsedMs={game.elapsedMs()} />
       <div className={styles["button__container"]}>
-        <Button disable={inGaming} label={"スタート"} onClick={handleButton} />
         <Button
-          disable={!inGaming || !canFinish}
+          disable={game.inPlaying}
+          label={"スタート"}
+          onClick={handleStartButton}
+        />
+        <Button
+          disable={!game.inPlaying || !game.canFinish()}
           label={"終了"}
-          onClick={handleButton}
+          onClick={handleFinishButton}
         />
       </div>
       <Modal
         open={showResult}
-        elapsedMs={elapsedMs}
+        elapsedMs={game.elapsedMs()}
         onClose={() => setShowResult(false)}
       />
       <Toast open={showToast} onClose={handleToastClose} />
@@ -130,7 +134,7 @@ export function GameView() {
         <TrayView
           caps={game.caps}
           selectedCap={selectedTrayCap}
-          inGaming={inGaming}
+          inPlaying={game.inPlaying}
           onClick={handleTrayCapClick}
         />
       </div>

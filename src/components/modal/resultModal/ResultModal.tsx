@@ -1,4 +1,4 @@
-import styles from "./Modal.module.css";
+import styles from "./ResultModal.module.css";
 
 interface Props {
   open: boolean;
@@ -13,7 +13,7 @@ function formatTime(elapsedMs: number): string {
   return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
-export function Modal({ open, elapsedMs, onClose }: Props) {
+export function ResultModal({ open, elapsedMs, onClose }: Props) {
   if (!open) return null;
 
   return (

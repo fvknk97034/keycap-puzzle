@@ -4,7 +4,7 @@ import { Timer } from "../timer/Timer";
 import { Button } from "../button/Button";
 import { KeyboardView } from "./keyboard/KeyboardView";
 import { TrayView } from "./tray/TrayView";
-import { Modal } from "../modal/Modal";
+import { ResultModal } from "../modal/resultModal/ResultModal";
 
 import type { CapEntity } from "../../domain/game/cap/CapEntity";
 import { SlotEntity } from "../../domain/game/slot/SlotEntity";
@@ -12,6 +12,7 @@ import { Game } from "../../domain/game/Game";
 
 import styles from "./Game.module.css";
 import { Toast } from "../toast/Toast";
+import { RuleModal } from "../modal/ruleModal/RuleModal";
 
 export function GameView() {
   const [game, setGame] = useState(() => new Game());
@@ -23,6 +24,7 @@ export function GameView() {
 
   const [showResult, setShowResult] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showRule, setShowRule] = useState(false);
 
   const [, forceUpdate] = useReducer((n) => n + 1, 0);
 
@@ -103,6 +105,12 @@ export function GameView() {
 
   return (
     <main className={styles["container"]}>
+      <button
+        className={styles["rule-button"]}
+        onClick={() => setShowRule(true)}
+      >
+        ?
+      </button>
       <Timer elapsedMs={game.elapsedMs()} />
       <div className={styles["button__container"]}>
         <Button
@@ -116,12 +124,13 @@ export function GameView() {
           onClick={handleFinishButton}
         />
       </div>
-      <Modal
+      <ResultModal
         open={showResult}
         elapsedMs={game.elapsedMs()}
         onClose={() => setShowResult(false)}
       />
       <Toast open={showToast} onClose={handleToastClose} />
+      <RuleModal open={showRule} onClose={() => setShowRule(false)} />
 
       <div className={styles["container__item"]}>
         <KeyboardView

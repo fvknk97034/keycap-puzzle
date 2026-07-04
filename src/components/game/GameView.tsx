@@ -61,6 +61,7 @@ export function GameView() {
 
   function removeCapFromSlot(slot: SlotEntity) {
     game.updateKeyboard(slot, null);
+    setSelectedTrayCap(null);
     setSelectedSlot(null);
     forceUpdate();
   }
@@ -74,7 +75,7 @@ export function GameView() {
       return;
     }
 
-    if (slot.cap && selectedTrayCap) {
+    if (slot.cap && !selectedSlot) {
       selectSlot(slot);
       return;
     }

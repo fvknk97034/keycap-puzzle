@@ -9,9 +9,15 @@ import { SlotEntity } from "../../../domain/game/slot/SlotEntity";
 import { CapEntity } from "../../../domain/game/cap/CapEntity";
 import type { IKeyboardEntity } from "../../../domain/game/keyboard/IKeyboardEntity";
 
+const sizeParams = { height: 1, width: 2 };
 const keyboard: IKeyboardEntity = {
   slots: [
-    [new SlotEntity({ cap: new CapEntity({ legend: ["Q", "た", "", ""] }) })],
+    [
+      new SlotEntity({
+        cap: new CapEntity({ legend: ["Q", "た", "", ""], ...sizeParams }),
+        ...sizeParams,
+      }),
+    ],
   ],
   equals: () => true,
   shuffleCaps: () => [],
@@ -31,7 +37,10 @@ describe("KeyboardView", () => {
   });
 
   it("クリック時に onClick が呼ばれること", async () => {
-    const slot = new SlotEntity({ cap: new CapEntity({ legend: ["Q"] }) });
+    const slot = new SlotEntity({
+      cap: new CapEntity({ legend: ["Q"], ...sizeParams }),
+      ...sizeParams,
+    });
     const kb: IKeyboardEntity = {
       slots: [[slot]],
       equals: () => true,

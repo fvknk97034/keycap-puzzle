@@ -8,7 +8,8 @@ import { CapEntity } from "../cap/CapEntity";
 
 describe("SlotEntity", () => {
   describe("constructor / getters", () => {
-    const cap = new CapEntity({ legend: ["Q", "た", "", ""] });
+    const sizeParams = { height: 1, width: 2 };
+    const cap = new CapEntity({ legend: ["Q", "た", "", ""], ...sizeParams });
 
     describe("値を指定する場合", () => {
       it("指定した値を設定すること", () => {
@@ -30,14 +31,8 @@ describe("SlotEntity", () => {
 
     describe("値を指定しない場合", () => {
       it("デフォルト値を設定すること", () => {
-        const slot = new SlotEntity({});
+        const slot = new SlotEntity(sizeParams);
 
-        expect(slot.size).toEqual(
-          new SizeValue({
-            height: SizeValue.BASE_HEIGHT,
-            width: SizeValue.BASE_WIDTH,
-          }),
-        );
         expect(slot.position).toEqual(new PositionValue({}));
         expect(slot.cap).toBeNull();
         expect(slot.fixed).toBe(false);
@@ -46,60 +41,76 @@ describe("SlotEntity", () => {
   });
 
   describe("equals", () => {
-    const bounds = { height: 1, width: 2 };
-    const cap = new CapEntity({ legend: ["Q", "た", "", ""] });
+    const sizeParams = { height: 1, width: 2 };
+    const cap = new CapEntity({ legend: ["Q", "た", "", ""], ...sizeParams });
 
     it("cap/height/width が同じなら true を返す", () => {
       expect(
-        new SlotEntity({ cap: cap, ...bounds }).equals(
-          new SlotEntity({ cap: cap, ...bounds }),
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
+          new SlotEntity({ cap: cap, ...sizeParams }),
         ),
       ).toBe(true);
     });
 
     it("cap が null 同士であれば true を返す", () => {
-      expect(new SlotEntity({}).equals(new SlotEntity({}))).toBe(true);
+      expect(
+        new SlotEntity(sizeParams).equals(new SlotEntity(sizeParams)),
+      ).toBe(true);
     });
 
     it("比較対象の cap だけ null であれば false を返す", () => {
-      expect(new SlotEntity({ cap: cap }).equals(new SlotEntity({}))).toBe(
-        false,
-      );
+      expect(
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
+          new SlotEntity(sizeParams),
+        ),
+      ).toBe(false);
     });
 
     it("自身の cap だけ null であれば false を返す", () => {
-      expect(new SlotEntity({}).equals(new SlotEntity({ cap: cap }))).toBe(
-        false,
-      );
+      expect(
+        new SlotEntity(sizeParams).equals(
+          new SlotEntity({ cap: cap, ...sizeParams }),
+        ),
+      ).toBe(false);
     });
 
     it("cap が異なれば false を返す", () => {
-      const other_cap = new CapEntity({ legend: ["changed", "た", "", ""] });
+      const other_cap = new CapEntity({
+        legend: ["changed", "た", "", ""],
+        ...sizeParams,
+      });
       expect(
-        new SlotEntity({ cap: cap }).equals(new SlotEntity({ cap: other_cap })),
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
+          new SlotEntity({ cap: other_cap, ...sizeParams }),
+        ),
       ).toBe(false);
     });
 
     it("cap の順序が異なれば false を返す", () => {
-      const other_cap = new CapEntity({ legend: cap.legend.val.toReversed() });
+      const other_cap = new CapEntity({
+        legend: cap.legend.val.toReversed(),
+        ...sizeParams,
+      });
       expect(
-        new SlotEntity({ cap: cap }).equals(new SlotEntity({ cap: other_cap })),
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
+          new SlotEntity({ cap: other_cap, ...sizeParams }),
+        ),
       ).toBe(false);
     });
 
     it("height が異なれば false を返す", () => {
-      const other_bounds = { ...bounds, height: bounds.height + 1 };
+      const other_bounds = { ...sizeParams, height: sizeParams.height + 1 };
       expect(
-        new SlotEntity({ cap: cap }).equals(
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
           new SlotEntity({ cap: cap, ...other_bounds }),
         ),
       ).toBe(false);
     });
 
     it("width が異なれば false を返す", () => {
-      const other_bounds = { ...bounds, width: bounds.width + 1 };
+      const other_bounds = { ...sizeParams, width: sizeParams.width + 1 };
       expect(
-        new SlotEntity({ cap: cap }).equals(
+        new SlotEntity({ cap: cap, ...sizeParams }).equals(
           new SlotEntity({ cap: cap, ...other_bounds }),
         ),
       ).toBe(false);

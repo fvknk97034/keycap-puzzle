@@ -8,6 +8,8 @@ import { TrayView } from "./TrayView";
 import { CapEntity } from "../../../domain/game/cap/CapEntity";
 
 describe("TrayView", () => {
+  const sizeParams = { height: 1, width: 2 };
+
   describe("inPlaying が false の場合", () => {
     it("表示されないこと", () => {
       const { container } = render(
@@ -25,7 +27,7 @@ describe("TrayView", () => {
 
   describe("cap がある場合", () => {
     it("legend の文字が表示されること", () => {
-      const cap = new CapEntity({ legend: ["Q", "た", "", ""] });
+      const cap = new CapEntity({ legend: ["Q", "た", "", ""], ...sizeParams });
       render(
         React.createElement(TrayView, {
           caps: [cap],
@@ -39,7 +41,7 @@ describe("TrayView", () => {
     });
 
     it("クリック時に onClick が呼ばれること", async () => {
-      const cap = new CapEntity({ legend: ["Q"] });
+      const cap = new CapEntity({ legend: ["Q"], ...sizeParams });
       const onClick = vi.fn();
       render(
         React.createElement(TrayView, {

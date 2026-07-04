@@ -4,57 +4,52 @@ import { SizeValue } from "./SizeValue";
 
 describe("SizeValue", () => {
   describe("constructor / getters", () => {
+    const sizeParams = { height: 1, width: 2 };
+
     describe("値を指定する場合", () => {
       it("指定した値を設定すること", () => {
-        const params = { height: 3, width: 2 };
-        const size = new SizeValue(params);
+        const sizeParams = { height: 3, width: 2 };
+        const size = new SizeValue(sizeParams);
 
-        expect(size.height).toBe(params.height);
-        expect(size.width).toBe(params.width);
-      });
-    });
-
-    describe("値を指定しない場合", () => {
-      it("デフォルト値を設定すること", () => {
-        const size = new SizeValue({});
-
-        expect(size.width).toBe(SizeValue.BASE_WIDTH);
-        expect(size.height).toBe(SizeValue.BASE_HEIGHT);
+        expect(size.height).toBe(sizeParams.height);
+        expect(size.width).toBe(sizeParams.width);
       });
     });
 
     describe("height に0以下の数字を指定する場合", () => {
       it("エラーを返すこと", () => {
-        expect(() => new SizeValue({ height: 0 })).toThrow();
+        expect(() => new SizeValue({ ...sizeParams, height: 0 })).toThrow();
       });
     });
 
     describe("width に0以下の数字を指定する場合", () => {
       it("エラーを返すこと", () => {
-        expect(() => new SizeValue({ width: 0 })).toThrow();
+        expect(() => new SizeValue({ ...sizeParams, width: 0 })).toThrow();
       });
     });
   });
 
   describe("equals", () => {
-    const params = { height: 3, width: 2 };
+    const sizeParams = { height: 3, width: 2 };
 
     it("legend/height/width が同じなら true を返す", () => {
-      expect(new SizeValue(params).equals(new SizeValue(params))).toBe(true);
+      expect(new SizeValue(sizeParams).equals(new SizeValue(sizeParams))).toBe(
+        true,
+      );
     });
 
     it("height が異なれば false を返す", () => {
-      const other_params = { ...params, height: params.height + 1 };
-      expect(new SizeValue(params).equals(new SizeValue(other_params))).toBe(
-        false,
-      );
+      const other_params = { ...sizeParams, height: sizeParams.height + 1 };
+      expect(
+        new SizeValue(sizeParams).equals(new SizeValue(other_params)),
+      ).toBe(false);
     });
 
     it("width が異なれば false を返す", () => {
-      const other_params = { ...params, width: params.width + 1 };
-      expect(new SizeValue(params).equals(new SizeValue(other_params))).toBe(
-        false,
-      );
+      const other_params = { ...sizeParams, width: sizeParams.width + 1 };
+      expect(
+        new SizeValue(sizeParams).equals(new SizeValue(other_params)),
+      ).toBe(false);
     });
   });
 });

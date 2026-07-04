@@ -32,8 +32,8 @@ export class SlotEntity {
 
   constructor({
     cap = null,
-    height = SizeValue.BASE_HEIGHT,
-    width = SizeValue.BASE_WIDTH,
+    height,
+    width,
     colStart = null,
     fixed = false,
   }: SlotEntityProps) {

@@ -1,4 +1,4 @@
 export interface SizeValueProps {
-  height?: number;
-  width?: number;
+  height: number;
+  width: number;
 }

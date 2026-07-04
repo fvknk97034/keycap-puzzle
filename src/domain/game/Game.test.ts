@@ -11,6 +11,7 @@ import type { SlotEntityProps } from "./slot/SlotEntityProps.types";
 
 interface ParamProps extends CapEntityProps, SlotEntityProps {}
 
+const SIZE_PARAMS = { height: 1, width: 4 };
 const STUB_DATA: ParamProps[][] = [
   [
     {
@@ -21,7 +22,7 @@ const STUB_DATA: ParamProps[][] = [
       rowStart: 5,
       fixed: false,
     },
-    { legend: ["esc"] },
+    { legend: ["esc"], ...SIZE_PARAMS },
   ],
   [
     {
@@ -32,8 +33,8 @@ const STUB_DATA: ParamProps[][] = [
       rowStart: 4,
       fixed: true,
     },
-    { legend: ["ctrl"], fixed: true },
-    { legend: ["space"], fixed: false },
+    { legend: ["ctrl"], ...SIZE_PARAMS, fixed: true },
+    { legend: ["space"], ...SIZE_PARAMS, fixed: false },
   ],
 ];
 
@@ -60,7 +61,7 @@ describe("Game", () => {
             rowStart: 5,
             fixed: false,
           }),
-          new SlotEntity({}),
+          new SlotEntity({ ...SIZE_PARAMS }),
         ],
         [
           new SlotEntity({
@@ -72,10 +73,11 @@ describe("Game", () => {
             fixed: true,
           }),
           new SlotEntity({
-            cap: new CapEntity({ legend: ["ctrl"] }),
+            cap: new CapEntity({ legend: ["ctrl"], ...SIZE_PARAMS }),
+            ...SIZE_PARAMS,
             fixed: true,
           }),
-          new SlotEntity({}),
+          new SlotEntity({ ...SIZE_PARAMS }),
         ],
       ]);
     });
@@ -105,8 +107,8 @@ describe("Game", () => {
       expect(new Set(game.caps)).toEqual(
         new Set([
           new CapEntity({ legend: ["Q", "た", "", ""], height: 2, width: 3 }),
-          new CapEntity({ legend: ["esc"] }),
-          new CapEntity({ legend: ["space"] }),
+          new CapEntity({ legend: ["esc"], ...SIZE_PARAMS }),
+          new CapEntity({ legend: ["space"], ...SIZE_PARAMS }),
         ]),
       );
     });

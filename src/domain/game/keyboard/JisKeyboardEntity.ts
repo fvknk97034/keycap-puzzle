@@ -1,31 +1,62 @@
 import type { IKeyboardEntity } from "./IKeyboardEntity";
 
 import { CapEntity } from "../cap/CapEntity";
-import type { CapEntityProps } from "../cap/CapEntityProps.types";
 
 import { SlotEntity } from "../slot/SlotEntity";
-import type { SlotEntityProps } from "../slot/SlotEntityProps.types";
 
 interface Props {
   isCorrect?: boolean;
 }
-interface ParamProps extends CapEntityProps, SlotEntityProps {}
+
+interface SizeParams {
+  width: number;
+  height: number;
+}
+
+interface KeyParams {
+  legend: string[];
+  height?: number;
+  width?: number;
+  colStart?: number;
+  fixed?: boolean;
+}
 
 export class JisKeyboardEntity implements IKeyboardEntity {
   static KEYBOARD_TYPE = "JIS";
+  private static readonly DEFAULT_SIZE: SizeParams = { width: 4, height: 1 };
 
-  private readonly _DATA: ParamProps[][] = [
+  private readonly _DATA: KeyParams[][] = [
     [
       { legend: ["esc"], colStart: 1 },
-      { legend: ["F1"], colStart: 4 * 1 + 4 + 1 },
+      {
+        legend: ["F1"],
+        colStart:
+          JisKeyboardEntity.DEFAULT_SIZE.width * 1 +
+          JisKeyboardEntity.DEFAULT_SIZE.width +
+          1,
+      },
       { legend: ["F2"] },
       { legend: ["F3"] },
       { legend: ["F4"] },
-      { legend: ["F5"], colStart: 4 * 5 + 4 + 2 * 1 + 1 },
+      {
+        legend: ["F5"],
+        colStart:
+          JisKeyboardEntity.DEFAULT_SIZE.width * 5 +
+          JisKeyboardEntity.DEFAULT_SIZE.width +
+          (JisKeyboardEntity.DEFAULT_SIZE.width / 2) * 1 +
+          1,
+      },
       { legend: ["F6"] },
       { legend: ["F7"] },
       { legend: ["F8"] },
-      { legend: ["F9"], colStart: 4 * 9 + 4 + 2 * 2 + 1 },
+      {
+        legend: ["F9"],
+        colStart:
+          JisKeyboardEntity.DEFAULT_SIZE.width * 9 +
+          JisKeyboardEntity.DEFAULT_SIZE.width +
+          (JisKeyboardEntity.DEFAULT_SIZE.width / 2) * 2 +
+          1,
+      },
       { legend: ["F10"] },
       { legend: ["F11"] },
       { legend: ["F12"] },
@@ -48,7 +79,11 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: ["back\nspace"] },
     ],
     [
-      { legend: ["tab"], width: 5, colStart: 1 },
+      {
+        legend: ["tab"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        colStart: 1,
+      },
       { legend: ["", "", "Q", "た"] },
       { legend: ["", "", "W", "て"] },
       { legend: ["", "ぃ", "E", "い"] },
@@ -61,10 +96,19 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: ["", "", "P", "せ"] },
       { legend: ["`", "", "@", "゛"] },
       { legend: ["{", "「", "[", "゜"] },
-      { legend: ["Enter"], width: 6, height: 2, colStart: -7 },
+      {
+        legend: ["Enter"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.5,
+        height: 2,
+        colStart: -7,
+      },
     ],
     [
-      { legend: ["caps lock"], width: 6, colStart: 1 },
+      {
+        legend: ["caps lock"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.5,
+        colStart: 1,
+      },
       { legend: ["", "", "A", "ち"] },
       { legend: ["", "", "S", "と"] },
       { legend: ["", "", "D", "し"] },
@@ -79,7 +123,11 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: ["}", "」", "]", "む"] },
     ],
     [
-      { legend: ["shift"], width: 8, colStart: 1 },
+      {
+        legend: ["shift"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 2,
+        colStart: 1,
+      },
       { legend: ["", "っ", "Z", "つ"] },
       { legend: ["", "", "X", "さ"] },
       { legend: ["", "", "C", "そ"] },
@@ -91,19 +139,56 @@ export class JisKeyboardEntity implements IKeyboardEntity {
       { legend: [">", "。", ".", "る"] },
       { legend: ["?", "・", "/", "め"] },
       { legend: ["_", "", "\\", "ろ"] },
-      { legend: ["shift"], width: 8 },
+      { legend: ["shift"], width: JisKeyboardEntity.DEFAULT_SIZE.width * 2 },
     ],
     [
-      { legend: ["ctrl"], width: 5, colStart: 1, fixed: true },
-      { legend: ["Win"], width: 4, fixed: true },
-      { legend: ["alt"], width: 5, fixed: true },
-      { legend: ["無変換"], width: 5, fixed: true },
-      { legend: ["space"], width: 16 },
-      { legend: ["変換"], width: 5, fixed: true },
-      { legend: ["カタカナ\nひらがな\nローマ字"], width: 5, fixed: true },
-      { legend: ["fn"], width: 5, fixed: true },
-      { legend: ["≣"], width: 5, fixed: true },
-      { legend: ["ctrl"], width: 5, fixed: true },
+      {
+        legend: ["ctrl"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        colStart: 1,
+        fixed: true,
+      },
+      {
+        legend: ["Win"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width,
+        fixed: true,
+      },
+      {
+        legend: ["alt"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      {
+        legend: ["無変換"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      { legend: ["space"], width: JisKeyboardEntity.DEFAULT_SIZE.width * 4 },
+      {
+        legend: ["変換"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      {
+        legend: ["カタカナ\nひらがな\nローマ字"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      {
+        legend: ["fn"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      {
+        legend: ["≣"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
+      {
+        legend: ["ctrl"],
+        width: JisKeyboardEntity.DEFAULT_SIZE.width * 1.25,
+        fixed: true,
+      },
     ],
   ];
   private readonly _slots: SlotEntity[][];
@@ -118,11 +203,16 @@ export class JisKeyboardEntity implements IKeyboardEntity {
 
   constructor({ isCorrect = false }: Props) {
     this._slots = this.data.map((row) =>
-      row.map((params) =>
-        params.fixed
-          ? new SlotEntity({ ...params, cap: new CapEntity(params) })
-          : new SlotEntity(params),
-      ),
+      row.map((params) => {
+        const mergedParams = { ...JisKeyboardEntity.DEFAULT_SIZE, ...params };
+
+        return mergedParams?.fixed
+          ? new SlotEntity({
+              ...mergedParams,
+              cap: new CapEntity(mergedParams),
+            })
+          : new SlotEntity(mergedParams);
+      }),
     );
 
     if (isCorrect) this._slots = this.filledCorrect();
@@ -140,7 +230,11 @@ export class JisKeyboardEntity implements IKeyboardEntity {
     const results = this.data
       .flat()
       .filter((params) => !params.fixed)
-      .map((params) => new CapEntity(params));
+      .map((params) => {
+        const mergedParams = { ...JisKeyboardEntity.DEFAULT_SIZE, ...params };
+
+        return new CapEntity(mergedParams);
+      });
 
     for (let i = 0; i < results.length; i++) {
       const rand = Math.floor(Math.random() * (i + 1));
@@ -152,9 +246,14 @@ export class JisKeyboardEntity implements IKeyboardEntity {
 
   private filledCorrect(): SlotEntity[][] {
     return this.data.map((row) =>
-      row.map(
-        (params) => new SlotEntity({ ...params, cap: new CapEntity(params) }),
-      ),
+      row.map((params) => {
+        const mergedParams = { ...JisKeyboardEntity.DEFAULT_SIZE, ...params };
+
+        return new SlotEntity({
+          ...mergedParams,
+          cap: new CapEntity(mergedParams),
+        });
+      }),
     );
   }
 }

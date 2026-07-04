@@ -10,6 +10,7 @@ import type { SlotEntityProps } from "../slot/SlotEntityProps.types";
 
 interface ParamProps extends CapEntityProps, SlotEntityProps {}
 
+const SIZE_PARAMS = { height: 1, width: 4 };
 const STUB_DATA: ParamProps[][] = [
   [
     {
@@ -20,7 +21,7 @@ const STUB_DATA: ParamProps[][] = [
       rowStart: 5,
       fixed: false,
     },
-    { legend: ["esc"] },
+    { legend: ["esc"], ...SIZE_PARAMS },
   ],
   [
     {
@@ -31,8 +32,8 @@ const STUB_DATA: ParamProps[][] = [
       rowStart: 4,
       fixed: true,
     },
-    { legend: ["ctrl"], fixed: true },
-    { legend: ["space"], fixed: false },
+    { legend: ["ctrl"], ...SIZE_PARAMS, fixed: true },
+    { legend: ["space"], ...SIZE_PARAMS, fixed: false },
   ],
 ];
 
@@ -59,7 +60,7 @@ describe("JisKeyboardEntity", () => {
           new CapEntity({ legend: ["win"], height: 2, width: 1 }),
         );
         expect(keyboard.slots[1][1].cap).toEqual(
-          new CapEntity({ legend: ["ctrl"] }),
+          new CapEntity({ legend: ["ctrl"], ...SIZE_PARAMS }),
         );
         expect(keyboard.slots[1][2].cap).toBeNull();
       });
@@ -74,16 +75,16 @@ describe("JisKeyboardEntity", () => {
           new CapEntity({ legend: ["Q", "た", "", ""], height: 2, width: 3 }),
         );
         expect(keyboard.slots[0][1].cap).toEqual(
-          new CapEntity({ legend: ["esc"] }),
+          new CapEntity({ legend: ["esc"], ...SIZE_PARAMS }),
         );
         expect(keyboard.slots[1][0].cap).toEqual(
           new CapEntity({ legend: ["win"], height: 2, width: 1 }),
         );
         expect(keyboard.slots[1][1].cap).toEqual(
-          new CapEntity({ legend: ["ctrl"] }),
+          new CapEntity({ legend: ["ctrl"], ...SIZE_PARAMS }),
         );
         expect(keyboard.slots[1][2].cap).toEqual(
-          new CapEntity({ legend: ["space"] }),
+          new CapEntity({ legend: ["space"], ...SIZE_PARAMS }),
         );
       });
     });
@@ -102,7 +103,8 @@ describe("JisKeyboardEntity", () => {
     describe("異なるデータ・構造になっている場合", () => {
       it("false を返すこと", () => {
         other.slots[0][0] = new SlotEntity({
-          cap: new CapEntity({ legend: ["invalid_key"] }),
+          cap: new CapEntity({ legend: ["invalid_key"], ...SIZE_PARAMS }),
+          ...SIZE_PARAMS,
         });
 
         expect(keyboard.equals(other)).toBe(false);
@@ -117,8 +119,8 @@ describe("JisKeyboardEntity", () => {
       const caps = keyboard.shuffleCaps();
       const nonFixedCaps = [
         new CapEntity({ legend: ["Q", "た", "", ""], height: 2, width: 3 }),
-        new CapEntity({ legend: ["esc"] }),
-        new CapEntity({ legend: ["space"] }),
+        new CapEntity({ legend: ["esc"], ...SIZE_PARAMS }),
+        new CapEntity({ legend: ["space"], ...SIZE_PARAMS }),
       ];
 
       expect(caps.length).toBe(nonFixedCaps.length);

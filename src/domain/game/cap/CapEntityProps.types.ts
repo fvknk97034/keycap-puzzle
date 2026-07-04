@@ -1,5 +1,5 @@
 export interface CapEntityProps {
   legend: string[];
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }

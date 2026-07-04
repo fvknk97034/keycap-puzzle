@@ -4,9 +4,6 @@ export class SizeValue {
   private readonly _height: number;
   private readonly _width: number;
 
-  static BASE_HEIGHT: number = 1;
-  static BASE_WIDTH: number = 4;
-
   get height() {
     return this._height;
   }
@@ -15,10 +12,7 @@ export class SizeValue {
     return this._width;
   }
 
-  constructor({
-    height = SizeValue.BASE_HEIGHT,
-    width = SizeValue.BASE_WIDTH,
-  }: SizeValueProps) {
+  constructor({ height, width }: SizeValueProps) {
     if (height <= 0 || width <= 0) throw new Error();
 
     this._height = height;

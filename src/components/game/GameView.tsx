@@ -75,7 +75,7 @@ export function GameView() {
       return;
     }
 
-    if (slot.cap && !selectedSlot) {
+    if (slot.cap) {
       selectSlot(slot);
       return;
     }

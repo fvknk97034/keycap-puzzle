@@ -81,14 +81,17 @@ export class Game {
   }
 
   updateKeyboard(slot: SlotEntity, cap: CapEntity | null): void {
-    const slottedCap = slot.cap;
+    const slottedCap: CapEntity | null = slot.cap;
+    if (!cap && !slottedCap) return;
+
     slot.cap = cap;
 
     if (cap) {
-      this._caps = this._caps.filter((c) => c !== cap);
-    } else {
-      this.caps.push(slottedCap!);
+      this._caps = this._caps.filter((c: CapEntity) => c !== cap);
+      return;
     }
+
+    this.caps.push(slottedCap!);
   }
 
   canFinish(): boolean {

@@ -238,11 +238,12 @@ describe("Game", () => {
   });
 
   describe("updateKeyboard", () => {
-    const game = new Game();
-    const cap = game.caps[0];
-    const slot = game.keyboard.slots[0][0];
-
     it("cap を渡すと caps から取り除かれ、slot に設定すること", () => {
+      const game = new Game();
+      game.start();
+      const cap = game.caps[0];
+      const slot = game.keyboard.slots[0][0];
+
       game.updateKeyboard(slot, cap);
 
       expect(game.caps).not.toContain(cap);
@@ -250,8 +251,12 @@ describe("Game", () => {
     });
 
     it("null を渡すと slot の cap を caps に戻すこと", () => {
-      game.updateKeyboard(slot, cap);
+      const game = new Game();
+      game.start();
+      const cap = game.caps[0];
+      const slot = game.keyboard.slots[0][0];
 
+      game.updateKeyboard(slot, cap);
       game.updateKeyboard(slot, null);
 
       expect(game.caps).toContain(cap);
